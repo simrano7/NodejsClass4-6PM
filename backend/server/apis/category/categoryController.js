@@ -23,5 +23,41 @@ const add = (req,res)=>{
         })
     })
 }
+const getall = (req,res)=>{
+    categoryModel.find()
+    .then((catdata)=>{
+        res.send({
+                status:200,
+                success:true,
+                message:"Data loaded!!",
+                data:catdata
+        })
+    })
+    .catch((err)=>{
+            res.send({
+                status:500,
+                success:false,
+                messsage:"Something went wrong!!"
+            })
+    })
+}
 
-module.exports = {add}
+const getsingle =(req,res)=>{
+    categoryModel.findOne({_id:req.body._id})
+    .then((catdata)=>{
+        res.send({
+            status:200,
+            success:true,
+            message:"Single record loaded!!",
+            data:catdata
+        })
+    })
+    .catch((err)=>{
+        res.send({
+            status:500,
+            success:false,
+            message:"Something went wrong!!"
+        })
+    })
+} 
+module.exports = {add,getall,getsingle}

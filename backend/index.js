@@ -2,9 +2,11 @@
 const express = require("express")
 const app = express()
 const data = require("./data")
+const port = 5000
 const db = require("./server/config/db")
 // app.method("path",()=>{})
 app.use(express.urlencoded({extended:true}))
+app.use(express.json())
 
 const apiroutes = require("./server/routes/apiroutes")
 app.use("/apis",apiroutes)
@@ -78,13 +80,13 @@ app.post("/city/:name/:pincode",(req,res)=>{
     })
 })
 
-app.listen(5000,(err)=>{
+app.listen(port,(err)=>{
         if(err != null){
                 console.log("err while connecting server",err);
                 
         }
         else{
-            console.log("Server connected!!",5000);
+            console.log("Server connected!!",port);
             
         }
 })
