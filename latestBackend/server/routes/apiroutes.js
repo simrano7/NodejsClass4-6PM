@@ -13,5 +13,6 @@ routes.post("/product/all",productController.getall)
 routes.post("/product/single",productController.getsingle)
 routes.post("/product/pagination",productController.getpagination)
 routes.post("/product/update",productController.update)
+routes.post("/product/changestatus",productController.changestatus)
 
 module.exports = routes

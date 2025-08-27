@@ -237,6 +237,9 @@ const update = (req,res)=>{
                 if(req.body.price){
                     prodata.price = req.body.price
                 }
+                if(req.body.status){
+                    prodata.status = req.body.status
+                }
                 prodata.save()
                 .then((updateddata)=>{
                     res.send({
@@ -268,4 +271,63 @@ const update = (req,res)=>{
 
     }
 }
-module.exports = {add,getall,getsingle,getpagination,update}
+// soft delete
+const changestatus =(req,res)=>{
+    var errMsgs = ""
+    if(!req.body._id){
+        errMsgs += "_id is required!!"
+    }
+    if(!req.body.status){
+        errMsgs += "status is required!!"
+    }
+    if(!!errMsgs){
+        res.send({
+            status:422,
+            success:false,
+            message:errMsgs
+        })
+    }
+    else{
+        // change status logic\
+        productModel.findOne({_id:req.body._id})
+        .then((prodata)=>{
+            if(prodata == null){
+                // data not  found
+                res.send({
+                    status:404,
+                    success:false,
+                    message:"data not found!!"
+                })
+            }
+            else{
+                // update status
+                prodata.status = req.body.status
+                prodata.save()
+                .then((updateprodata)=>{
+                        res.send({
+                            status:200,
+                            success:true,
+                            message:"status changed!!",
+                            data:updateprodata
+                        })
+                })
+                 .catch((err)=>{
+                        res.send({
+                            status:500,
+                            success:false,
+                            message:"Something went wrong!!"
+                        })
+                    })
+            }
+        })
+          .catch((err)=>{
+            res.send({
+                status:500,
+                success:false,
+                message:"Something went wrong!!"
+            })
+        })
+
+    }
+}
+module.exports = {add,getall,getsingle,getpagination,update,changestatus}
